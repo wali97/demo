@@ -72,7 +72,7 @@ pipeline {
 		steps{
 			script{
 				docker.withRegistry('',registryCredential){
-				sh 'docker push $registry/frontend'
+				sh 'docker push $registry/rahulg123'
                        		
 				}
 			}
