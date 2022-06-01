@@ -90,8 +90,7 @@ pipeline {
 	}
 		post{
 			always{
-			emailext
-				body: 'A Test Email',from: "rahulguptaft9@gmail.com", to: "rahulguptaft9@gmail.com", subject: 'Test'
+			emailext body: 'A Test Email', to: "rahulguptaft9@gmail.com", subject: 'Test'
 			}
 		}
 	
