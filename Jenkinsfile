@@ -87,11 +87,7 @@ pipeline {
 			}
 		}
 	}*/
-	}	post{
-			always{
-			emailtext body: 'A Test Email', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
-			}
-		}
+	}
 	
 
 }
