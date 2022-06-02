@@ -57,36 +57,69 @@ pipeline {
 		}
 	
 	}*/	
+	
+	stage('environment selection') {
+            steps{
+                emailext (       
+                to: "rahulguptaft9@gmail.com", 
+                replyTo: "rahulguptaft9@gmail", 
+                subject: "Job '${env.JOB_BASE_NAME}' (${env.BUILD_NUMBER}) is waiting for deployment input",  
+                body: """<table>WAITING: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+	              <p> Select the environment for deployement on link:  <a href= '${env.BUILD_URL}/input'>${env.JOB_NAME} [${env.BUILD_NUMBER}] </a></table> 
+	              \n <b> NOTE: If no response is provided the job will be aborted in 5 mins.</b>""",
+                mimeType: 'text/html');
+                script{
+                  timeout(time: 5, unit: 'MINUTES'){
+                  env.DEPLOYMENT_ENV = input message: 'Select the environment',
+                  parameters: [choice(choices: ['SIT','QA','SIT-QA'], 
+                  description: 'Users Choice', name: 'CHOICE')]
+                  }                  
+                }
+                  	 
+            }
+}
 		
 	
 	stage('Building image for front end') {
+			when { 
+                expression { env.DEPLOYMENT_ENV == 'SIT' }
+            } 
 		steps{
 			script{
-				sh 'docker build -f Dockerfile -t $registry/rahulg123 .'
-               
+				//sh 'docker build -f Dockerfile -t $registry/rahulg123 .'
+               echo "1"
 			}
 		}
 	}
 		
 	stage('Registring image for front end') {
+	
+		when { 
+                expression { env.DEPLOYMENT_ENV == 'QA' }
+            } 
 		steps{
 			script{
-				docker.withRegistry('',registryCredential){
-				sh 'docker push $registry/rahulg123'
+				//docker.withRegistry('',registryCredential){
+				//sh 'docker push $registry/rahulg123'
+				echo "2"
                        		
 				}
 			}
 		}
 	}	
-	/*stage('Registring image for front end') {
+	stage('Registring image for front end') {
+	when { 
+                expression { env.DEPLOYMENT_ENV == 'SIT-QA' }
+            } 
 		steps{
 			script{
-				docker.withRegistry('',registryCredential){
-				dockerImage.push()
+				//docker.withRegistry('',registryCredential){
+				//dockerImage.push()
+				echo "3"
 				}
 			}
 		}
-	}*/
+	}
 	}
 		post{
 			always{
