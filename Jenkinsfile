@@ -70,7 +70,7 @@ pipeline {
                 script{
                   timeout(time: 5, unit: 'MINUTES'){
                   env.DEPLOYMENT_ENV = input message: 'Select the environment',
-                  parameters: [choice(choices: ['SIT','QA','SIT-QA'], 
+                  parameters: [choice(choices: ['SIT','QA'], 
                   description: 'Users Choice', name: 'CHOICE')]
                   }                  
                 }
@@ -80,19 +80,27 @@ pipeline {
 
 	
 	stage('Building image for front end') {
+		when { 
+                expression { env.DEPLOYMENT_ENV == 'SIT' }
+            } 
 		steps{
 			script{
-				sh 'docker build -f Dockerfile -t $registry/rahulg123 .'
+				//sh 'docker build -f Dockerfile -t $registry/rahulg123 .'
+				echo 'HI'
                
 			}
 		}
 	}
 		
 	stage('Registring image for front end') {
+		when { 
+                expression { env.DEPLOYMENT_ENV == 'QA' }
+            } 
 		steps{
 			script{
 				docker.withRegistry('',registryCredential){
-				sh 'docker push $registry/rahulg123'
+				//sh 'docker push $registry/rahulg123'
+				echo 'HI123'
                        		
 				}
 			}
