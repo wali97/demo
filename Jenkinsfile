@@ -120,12 +120,4 @@ pipeline {
 			}
 		}
 	}
-	}
-		post{
-			always{
-			emailext body: 'A Test Email', to: "rahulguptaft9@gmail.com", subject: 'Test'
-			}
-		}
-	
-
-}
+	}}
