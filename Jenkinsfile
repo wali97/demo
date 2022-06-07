@@ -2,6 +2,11 @@ pipeline {
     
 	  agent any
   tools {nodejs "node"}
+	
+	parameters {  
+    gitParameter branchFilter: 'origin/(.*)', name: 'BRANCH', tagFilter: '*', type: 'PT_BRANCH'    
+  }
+
 
 	environment{
 	registry="mrchelsea"
@@ -85,6 +90,7 @@ pipeline {
             } 
 		steps{
 			script{
+				if (params.BRANCH == "master")
 				//sh 'docker build -f Dockerfile -t $registry/rahulg123 .'
 				echo 'HI'
                
@@ -98,6 +104,8 @@ pipeline {
             } 
 		steps{
 			script{
+				
+				if (params.BRANCH == "dev")
 				docker.withRegistry('',registryCredential){
 				//sh 'docker push $registry/rahulg123'
 				echo 'HI123'
