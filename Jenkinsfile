@@ -32,15 +32,27 @@ pipeline {
 		}
 	}*/	
 		
-	/*stage('Code Coverage'){
+	stage('Code Coverage'){
 		steps{	
 			script{
-		sh 'npm run test-cov'
+		if (params.BRANCH == "master")				
+		//sh 'npm run test-cov'
+				echo "TestingMaster"
 		}
-		step([$class: 'CoberturaPublisher', coberturaReportFile: 'output/coverage/jest/cobertura-coverage.xml'])	
-		}
-	}*/
 		
+		}
+	}
+	
+	stage('Code Coverage'){
+		steps{	
+			script{
+		if (params.BRANCH == "dev")				
+		//sh 'npm run test-cov'
+				echo "TestingDev"
+		}
+		
+		}
+	}	
 	/*stage('SonarQube'){
 		tools{
 		jdk "jdk11"
@@ -90,7 +102,7 @@ pipeline {
             } 
 		steps{
 			script{
-				if (params.BRANCH == "master")
+				
 				//sh 'docker build -f Dockerfile -t $registry/rahulg123 .'
 				echo 'HI'
                
@@ -105,7 +117,6 @@ pipeline {
 		steps{
 			script{
 				
-				if (params.BRANCH == "dev")
 				docker.withRegistry('',registryCredential){
 				//sh 'docker push $registry/rahulg123'
 				echo 'HI123'
