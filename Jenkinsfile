@@ -32,7 +32,7 @@ pipeline {
 		}
 	}*/	
 		
-	stage('Code Coverage'){
+	stage('master'){
 		steps{	
 			script{
 		if (params.BRANCH == "master")				
@@ -43,7 +43,7 @@ pipeline {
 		}
 	}
 	
-	stage('Code Coverage'){
+	stage('dev'){
 		steps{	
 			script{
 		if (params.BRANCH == "dev")				
